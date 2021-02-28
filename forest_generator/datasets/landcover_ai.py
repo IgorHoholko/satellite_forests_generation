@@ -63,7 +63,7 @@ class LandcoverAI(BaseDataset):
 
 
         self.imgs = glob.glob(os.path.join(DATA_DIRNAME / 'processed', "*.jpg"))
-        self.masks = glob.glob(os.path.join(DATA_DIRNAME / 'processed', "*.jpg"))
+        self.masks = glob.glob(os.path.join(DATA_DIRNAME / 'processed', "*.png"))
         sorted(self.imgs)
         sorted(self.masks)
 
