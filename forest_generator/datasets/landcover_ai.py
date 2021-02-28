@@ -57,6 +57,12 @@ class LandcoverAI(BaseDataset):
         self.val_labels:        List[int] = []
         self.test_labels:       List[int] = []
 
+        self.labels_names = {0:'Other', 1:'Buildings', 2:'Woodland', 3:'Water'}
+        self.colors = {0: [192, 192, 192],
+                      1: [102, 51, 0],
+                      2: [0, 153, 0],
+                      3: [0, 128, 250]}
+
     def load_or_generate_data(self):
         if not os.path.exists(ESSENTIAL_FILE):
             _get_and_process()
@@ -88,6 +94,13 @@ class LandcoverAI(BaseDataset):
         if self.keep_in_memory:
             self.imgs = [cv2.imread(ipath) for ipath in self.imgs]
             self.masks = [cv2.imread(mpath) for mpath in self.masks]
+
+
+    def apply_colors2mask(self, mask: np.ndarray) -> np.ndarray:
+        for i in range(mask.shape[0]):
+            for j in range(mask.shape[1]):
+                mask[i, j] = self.colors[mask[i, j, 0]]
+        return mask
 
 
     def __len__(self):
