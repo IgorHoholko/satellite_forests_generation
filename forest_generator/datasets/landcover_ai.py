@@ -1,5 +1,5 @@
 """
- File name   : 
+ File name   : landcover_ai.py
  Description : http://landcover.ai/ dataset Wrapper.
 
  Date created : 27.02.2021
@@ -13,6 +13,8 @@ import cv2
 import shutil
 from tqdm import tqdm
 import requests, zipfile, io
+import numpy as np
+from typing import List
 
 
 TARGET_SIZE = 512
@@ -38,20 +40,58 @@ class LandcoverAI(BaseDataset):
     * segmentation masks for three classes: buildings, woodlands and water
     * total area of 216.27 km2 (1.85 km2 of buildings, 72.22 km2 of woodlands, 13.25 km2 of water)
     """
-    def __init__(self):
+    def __init__(self, resolution: str = 'both', keep_in_memory: bool = False):
+        """
+        :param resolution: 'high' - 25 cm per pixel, 'low' - 50 cm per pixel, 'both' - load both.
+        :param keep_in_cache: if True - load all images in memory. Othervise keep just their names.
+        """
         super(LandcoverAI).__init__()
 
+        self.resolution = resolution
+        self.keep_in_memory = keep_in_memory
+
+        self.imgs:      List[np.ndarray] = []
+        self.masks:     List[np.ndarray] = []
+
+        self.train_labels:      List[int] = []
+        self.val_labels:        List[int] = []
+        self.test_labels:       List[int] = []
 
     def load_or_generate_data(self):
         if not os.path.exists(ESSENTIAL_FILE):
             _get_and_process()
 
 
+        self.imgs = glob.glob(os.path.join(DATA_DIRNAME / 'processed', "*.jpg"))
+        self.masks = glob.glob(os.path.join(DATA_DIRNAME / 'processed', "*.jpg"))
+        sorted(self.imgs)
+        sorted(self.masks)
+
+        with open(DATA_DIRNAME / 'train.txt') as f:
+            self.train_labels = f.readlines()
+            self.train_labels = [l.strip() for  l in self.train_labels]
+        with open(DATA_DIRNAME / 'test.txt') as f:
+            self.test_labels = f.readlines()
+            self.test_labels = [l.strip() for l in self.test_labels]
+        with open(DATA_DIRNAME / 'val.txt') as f:
+            self.val_labels = f.readlines()
+            self.val_labels = [l.strip() for l in self.val_labels]
+
+        split_char = '/' if '/' in self.imgs[0] else '\\'
+        imgs_names = [ipath.split(split_char)[-1].split('.')[0] for ipath in self.imgs]
+        self.train_labels = [imgs_names.index(name) for name in self.train_labels ]
+        self.test_labels = [imgs_names.index(name) for name in self.test_labels]
+        self.val_labels = [imgs_names.index(name) for name in self.val_labels]
+
+        assert len(self.train_labels)+len(self.test_labels)+len(self.val_labels)==len(self.imgs)
+
+        if self.keep_in_memory:
+            self.imgs = [cv2.imread(ipath) for ipath in self.imgs]
+            self.masks = [cv2.imread(mpath) for mpath in self.masks]
 
 
-
-
-
+    def __len__(self):
+        return len(self.imgs)
 
     @property
     def name(self):
@@ -132,4 +172,5 @@ if __name__ == '__main__':
     dataset = LandcoverAI()
     dataset.load_or_generate_data()
     print(f"Dataset name: {dataset.name}")
-    # print(f"Contains {len(dataset)} elements")
+    print(f"Dataset tarin/test/val sizes: {len(dataset.train_labels)}, {len(dataset.test_labels)}, {len(dataset.val_labels)}")
+    print(f"Contains {len(dataset)} elements")

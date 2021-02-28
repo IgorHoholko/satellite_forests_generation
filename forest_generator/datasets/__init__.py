@@ -7,3 +7,4 @@
 """
 
 
+from .landcover_ai import LandcoverAI
