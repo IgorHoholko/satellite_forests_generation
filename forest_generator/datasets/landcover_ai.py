@@ -40,6 +40,12 @@ class LandcoverAI(BaseDataset):
     * segmentation masks for three classes: buildings, woodlands and water
     * total area of 216.27 km2 (1.85 km2 of buildings, 72.22 km2 of woodlands, 13.25 km2 of water)
     """
+    labels_names = {0: 'Other', 1: 'Buildings', 2: 'Woodland', 3: 'Water'}
+    colors = {0: [192, 192, 192],
+               1: [102, 51, 0],
+               2: [0, 153, 0],
+               3: [0, 128, 250]}
+
     def __init__(self, resolution: str = 'both', keep_in_memory: bool = False):
         """
         :param resolution: 'high' - 25 cm per pixel, 'low' - 50 cm per pixel, 'both' - load both.
@@ -57,11 +63,6 @@ class LandcoverAI(BaseDataset):
         self.val_labels:        List[int] = []
         self.test_labels:       List[int] = []
 
-        self.labels_names = {0:'Other', 1:'Buildings', 2:'Woodland', 3:'Water'}
-        self.colors = {0: [192, 192, 192],
-                      1: [102, 51, 0],
-                      2: [0, 153, 0],
-                      3: [0, 128, 250]}
 
     def load_or_generate_data(self):
         if not os.path.exists(ESSENTIAL_FILE):
@@ -96,10 +97,11 @@ class LandcoverAI(BaseDataset):
             self.masks = [cv2.imread(mpath) for mpath in self.masks]
 
 
-    def apply_colors2mask(self, mask: np.ndarray) -> np.ndarray:
+    @staticmethod
+    def apply_colors2mask(mask: np.ndarray) -> np.ndarray:
         for i in range(mask.shape[0]):
             for j in range(mask.shape[1]):
-                mask[i, j] = self.colors[mask[i, j, 0]]
+                mask[i, j] = LandcoverAI.colors[mask[i, j, 0]]
         return mask
 
 
