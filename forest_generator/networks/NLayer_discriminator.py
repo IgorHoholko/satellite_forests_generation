@@ -1,5 +1,5 @@
 """
- File name   : NLayerDiscriminator.py
+ File name   : NLayer_discriminator.py
  Description : description
 
  Date created : 07.03.2021

@@ -1,5 +1,5 @@
 """
- File name   : resnet_generatorr.py
+ File name   : resnet_generator.py
  Description : description
 
  Date created : 07.03.2021

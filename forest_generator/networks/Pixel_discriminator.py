@@ -1,5 +1,5 @@
 """
- File name   : PixelDiscriminator.py
+ File name   : Pixel_discriminator.py
  Description : description
 
  Date created : 07.03.2021

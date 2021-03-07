@@ -6,7 +6,7 @@
  Author:  Ihar Khakholka
 """
 
-from .NLayerDiscriminator import NLayerDiscriminator
-from .PixelDiscriminator import PixelDiscriminator
-from .resnet_generatorr import ResnetGenerator
+from .NLayer_discriminator import NLayerDiscriminator
+from .Pixel_discriminator import PixelDiscriminator
+from .resnet_generator import ResnetGenerator
 from .unet_generator import UnetGenerator
