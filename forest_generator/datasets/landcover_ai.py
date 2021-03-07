@@ -14,7 +14,7 @@ import shutil
 from tqdm import tqdm
 import requests, zipfile, io
 import numpy as np
-from typing import List
+from typing import List, Tuple
 
 
 TARGET_SIZE = 512
@@ -95,6 +95,15 @@ class LandcoverAI(BaseDataset):
         if self.keep_in_memory:
             self.imgs = [cv2.imread(ipath) for ipath in self.imgs]
             self.masks = [cv2.imread(mpath) for mpath in self.masks]
+
+    def get_sample(self, id_: int) -> Tuple[np.ndarray, np.ndarray]:
+        if self.keep_in_memory:
+            img = self.imgs[id_]
+            mask = self.masks[id_]
+        else:
+            img = cv2.cvtColor(cv2.imread(self.imgs[id_]), cv2.COLOR_BGR2RGB)
+            mask = cv2.imread(self.masks[id_])
+        return img, mask
 
 
     @staticmethod
