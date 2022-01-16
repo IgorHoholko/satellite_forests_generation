@@ -6,5 +6,6 @@
  Author:  Ihar Khakholka
 """
 
-
-from .landcover_ai import LandcoverAI
+from forest_generator.datasets.base_dataset import BaseDataset
+from forest_generator.datasets.landcover_ai import LandcoverAI
+from .custom_dataset import CustomDataset
