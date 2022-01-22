@@ -1,14 +1,14 @@
 """
- File name   : NLayer_discriminator.py
+ File name   : n_layer_discriminator.py
  Description : description
 
- Date created : 07.03.2021
+ Date created : 22.01.2022
  Author:  Ihar Khakholka
 """
 
-from torch import nn
 import functools
 
+from torch import nn
 
 class NLayerDiscriminator(nn.Module):
     """Defines a PatchGAN discriminator"""

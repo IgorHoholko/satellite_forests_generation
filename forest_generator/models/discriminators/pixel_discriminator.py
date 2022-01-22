@@ -1,13 +1,14 @@
 """
- File name   : Pixel_discriminator.py
+ File name   : pixel_discriminator.py
  Description : description
 
- Date created : 07.03.2021
+ Date created : 22.01.2022
  Author:  Ihar Khakholka
 """
 
-from torch import nn
 import functools
+
+from torch import nn
 
 
 class PixelDiscriminator(nn.Module):

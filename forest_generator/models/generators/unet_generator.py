@@ -2,14 +2,13 @@
  File name   : unet_generator.py
  Description : description
 
- Date created : 07.03.2021
+ Date created : 22.01.2022
  Author:  Ihar Khakholka
 """
 
+import functools
 
 from torch import nn
-import torch
-import functools
 
 
 class UnetGenerator(nn.Module):
@@ -41,7 +40,6 @@ class UnetGenerator(nn.Module):
     def forward(self, input):
         """Standard forward"""
         return self.model(input)
-
 
 
 class UnetSkipConnectionBlock(nn.Module):
