@@ -1,0 +1,14 @@
+
+# prefix - apply Before Normalization And Resize
+prefix: []
+
+# postfix - apply After Normalization And Resize
+postfix:
+  - _target_: albumentations.HorizontalFlip
+    p: 0.5
+
+  - _target_: albumentations.Rotate
+    limit: 20
+    p: 0.2
+
+

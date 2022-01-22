@@ -1,0 +1,28 @@
+
+defaults:
+  - augmentations: default
+
+
+datasets:
+  datasets_train: [wider_train]
+  datasets_val: [wider_val]
+  datasets_test: [minsk_euro_2019_test]
+
+  concat_test: False
+  concat_val: False
+
+
+train_smart_pad_resize: True
+test_smart_pad_resize: True
+
+input_height: 256
+input_width: 256
+interpolation: 1
+
+normalization: "standardization" # forest_generator/utils/normalization
+
+dataloader:
+  batch_size: 64
+  shuffle: True
+  num_workers: 0
+  pin_memory: False

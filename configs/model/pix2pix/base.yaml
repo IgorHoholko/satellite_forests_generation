@@ -1,0 +1,31 @@
+
+_target_: forests_generator/models/Pix2PixModel
+
+
+lit:
+  _target_: ???
+
+is_train: true
+
+# COMMON
+input_num_channels: 3     # of input image channels: 3 for RGB and 1 for grayscale
+output_num_channels: 3    # of output image channels: 3 for RGB and 1 for grayscale
+norm: 'instance'          # instance normalization or batch normalization [instance | batch | none]'
+init_type: 'normal'       # network initialization [normal | xavier | kaiming | orthogonal]
+init_gain: 0.02           # scaling factor for normal, xavier and orthogonal.
+
+# GENERATOR
+netG: 'unet_256'          # generator architecture [resnet_9blocks | resnet_6blocks | unet_256 | unet_128]'
+num_gen_filters: 64       # of gen filters in the last conv layer
+use_dropout: false        # dropout for the generator
+
+# DISCRIMINATOR
+num_dis_filters: 64       # of discrim filters in the first conv layer
+netD: 'n_layers'          # specify discriminator architecture [basic | n_layers | pixel]. The basic model is a 70x70 PatchGAN. n_layers allows you to specify the layers in the discriminator
+n_layers_D: 3             # the number of conv layers in the discriminator; effective when netD=='n_layers'
+
+
+loss:
+  _target_: training.utils.losses.MultiBoxLoss
+  threshold: 0.5
+  neg_pos_ratio: 3
