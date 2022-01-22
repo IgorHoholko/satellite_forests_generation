@@ -23,17 +23,16 @@ class Pix2PixModel(BaseModel):
     """
 
 
-    def __init__(self, cfg):
-        """Initialize the pix2pix class.
-        Parameters:
-            cfg -- params for network initialization
-        """
+    def __init__(self, cfg, *args, **kwargs):
+        """Initialize the pix2pix class. """
         BaseModel.__init__(self)
-        # define networks (both generator and discriminator)
-        self.netG = define_G(cfg.input_nc, cfg.output_nc, cfg.ngf, cfg.netG, cfg.norm, not cfg.no_dropout, cfg.init_type, cfg.init_gain)
 
-        if self.isTrain:  # define a discriminator; conditional GANs need to take both input and output images; Therefore, #channels for D is input_nc + output_nc
-            self.netD = define_D(cfg.input_nc + cfg.output_nc, cfg.ndf, cfg.netD, cfg.n_layers_D, cfg.norm, cfg.init_type, cfg.init_gain)
+        self.cfg = cfg
+        # define networks (both generator and discriminator)
+        self.netG = define_G(cfg.input_num_channels, cfg.output_num_channels, cfg.num_gen_filters, cfg.netG, cfg.norm, cfg.use_dropout, cfg.init_type, cfg.init_gain)
+
+        if cfg.is_train:  # define a discriminator; conditional GANs need to take both input and output images; Therefore, #channels for D is input_nc + output_nc
+            self.netD = define_D(cfg.input_num_channels + cfg.output_num_channels, cfg.num_dis_filters, cfg.netD, cfg.n_layers_D, cfg.norm, cfg.init_type, cfg.init_gain)
 
 
     def forward(self, x):
